@@ -1,6 +1,6 @@
 import { query } from "../Utils/connecttoDB.js";  // ✅ Correct relative path
 import { createRoleQuery, createEmployeeTableQuery, getAllEmployeeQuery } from "../Utils/sqlQuery.js";  // ✅ Fixed import typo
-
+import {createError} from "../Utils/error.js"
 export async function getAllEmployee(req, res, next) {
     try {
         const response = await query("SELECT to_regclass('employee_details');");  // ✅ Fix query syntax
@@ -19,6 +19,7 @@ export async function getAllEmployee(req, res, next) {
     } catch (error) {
         console.error("Error in getAllEmployee:", error);  // ✅ Proper error logging
         res.status(500).json({ error: error.message });  // ✅ Send error response
+        return next(createError(400,"Couldn't get employee details!"));
     }
 }
 
